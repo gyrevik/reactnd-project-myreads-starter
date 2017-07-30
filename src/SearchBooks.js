@@ -13,6 +13,21 @@ class SearchBooks extends Component {
     updateQuery = (query) => {
         this.setState({ query: query })
         console.log(query)
+
+        if (query.length > 0) {
+            BooksAPI.search(query, 20).then((books) => {
+                //this.setState({ books });
+                //debugger;
+                //showingBooks = books.slice();
+                this.setState({ books });
+                debugger;
+            });
+            //showingBooks = books.slice();
+        }
+        else {
+            //books.length = 0;
+            //this.setState({ books: books });
+        }
     }
 
     /*componentDidMount() {
@@ -23,36 +38,42 @@ class SearchBooks extends Component {
 
     render() {
         //debugger
-        let { query, books } = this.state;
+        //let { query, books } = this.state;
         //let { query } = this.state;
 
-        let showingBooks = [];    //, showingBooksByTitle, showingBooksByAuthors
-        if (query) {
+        //let showingBooks = [];    //, showingBooksByTitle, showingBooksByAuthors
+        //if (query) {
             //const match = new RegExp(escapeRegExp(query), 'i')
             //showingBooksByTitle = books.filter((book) => match.test(book.title))
             //showingBooksByAuthors = books.filter((book) => match.test(book.authors.join(' ')))
             //showingBooks = showingBooksByTitle.concat(showingBooksByAuthors)
             //showingBooks = showingBooksByTitle.filter(function(obj) { return showingBooksByAuthors.indexOf(obj) == -1; });
 
+            /*
             if (query.length > 0) {
                 BooksAPI.search(query, 20).then((books) => {
-                    this.setState({ books });
+                    //this.setState({ books });
+                    //debugger;
                     //showingBooks = books.slice();
+                    this.setState({ books });
+                    debugger;
                 });
-                showingBooks = books.slice();
+                //showingBooks = books.slice();
             }
             else {
                 //books.length = 0;
                 //this.setState({ books: books });
             }
-        } 
+            */
+        //} 
 
-        console.log(`query length: ${query.length}`);
-        console.log(`books length: ${books.length}`);
-        console.log(`showingBooks length: ${showingBooks.length}`);
-
-        //showingBooks = books;
-
+        //console.log(`query length: ${query.length}`);
+        //console.log(`books length: ${books.length}`);
+        //console.log(`showingBooks length: ${showingBooks.length}`);
+        //debugger;
+        //showingBooks = books.slice();
+        //debugger;
+        
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -69,17 +90,18 @@ class SearchBooks extends Component {
                         <input 
                             type="text" 
                             placeholder="Search by title or author"
-                            value={query}
+                            value={this.state.query}
                             onChange={(event) => this.updateQuery(event.target.value)}
                         />
                     </div>
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
-                    query: {query}
+                    query: {this.state.query}
                     {
-                        showingBooks && showingBooks.length > 0 && (
-                            showingBooks.map((book) => (
+                        //debugger;
+                        this.state.books && this.state.books.length > 0 && (
+                            this.state.books.map((book) => (
                                 <Book key={book.id} value={book}/>
                             ))
                         )
