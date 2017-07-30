@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-//import escapeRegExp from 'escape-string-regexp'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
@@ -16,64 +15,12 @@ class SearchBooks extends Component {
 
         if (query.length > 0) {
             BooksAPI.search(query, 20).then((books) => {
-                //this.setState({ books });
-                //debugger;
-                //showingBooks = books.slice();
                 this.setState({ books });
-                debugger;
             });
-            //showingBooks = books.slice();
-        }
-        else {
-            //books.length = 0;
-            //this.setState({ books: books });
         }
     }
 
-    /*componentDidMount() {
-        BooksAPI.getAll().then((books) => {
-            this.setState({ books });
-        })
-    }*/
-
-    render() {
-        //debugger
-        //let { query, books } = this.state;
-        //let { query } = this.state;
-
-        //let showingBooks = [];    //, showingBooksByTitle, showingBooksByAuthors
-        //if (query) {
-            //const match = new RegExp(escapeRegExp(query), 'i')
-            //showingBooksByTitle = books.filter((book) => match.test(book.title))
-            //showingBooksByAuthors = books.filter((book) => match.test(book.authors.join(' ')))
-            //showingBooks = showingBooksByTitle.concat(showingBooksByAuthors)
-            //showingBooks = showingBooksByTitle.filter(function(obj) { return showingBooksByAuthors.indexOf(obj) == -1; });
-
-            /*
-            if (query.length > 0) {
-                BooksAPI.search(query, 20).then((books) => {
-                    //this.setState({ books });
-                    //debugger;
-                    //showingBooks = books.slice();
-                    this.setState({ books });
-                    debugger;
-                });
-                //showingBooks = books.slice();
-            }
-            else {
-                //books.length = 0;
-                //this.setState({ books: books });
-            }
-            */
-        //} 
-
-        //console.log(`query length: ${query.length}`);
-        //console.log(`books length: ${books.length}`);
-        //console.log(`showingBooks length: ${showingBooks.length}`);
-        //debugger;
-        //showingBooks = books.slice();
-        //debugger;
-        
+    render() {        
         return (
             <div className="search-books">
                 <div className="search-books-bar">
@@ -96,16 +43,15 @@ class SearchBooks extends Component {
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <ol className="books-grid"></ol>
-                    query: {this.state.query}
+                    <ol className="books-grid">          
                     {
-                        //debugger;
                         this.state.books && this.state.books.length > 0 && (
                             this.state.books.map((book) => (
                                 <Book key={book.id} value={book}/>
                             ))
                         )
                     }
+                    </ol>
                 </div>
             </div>
         )
