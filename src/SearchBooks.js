@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
+//import escapeRegExp from 'escape-string-regexp'
 import * as BooksAPI from './BooksAPI'
 import Book from './Book'
 
@@ -23,9 +23,9 @@ class SearchBooks extends Component {
 
     render() {
         //debugger
-        const { query, books } = this.state
+        let { query, books } = this.state;
 
-        let showingBooks    //, showingBooksByTitle, showingBooksByAuthors
+        let showingBooks = []    //, showingBooksByTitle, showingBooksByAuthors
         if (query) {
             //const match = new RegExp(escapeRegExp(query), 'i')
             //showingBooksByTitle = books.filter((book) => match.test(book.title))
@@ -33,13 +33,23 @@ class SearchBooks extends Component {
             //showingBooks = showingBooksByTitle.concat(showingBooksByAuthors)
             //showingBooks = showingBooksByTitle.filter(function(obj) { return showingBooksByAuthors.indexOf(obj) == -1; });
 
-
-            BooksAPI.search(query, 20).then((books) => {
-                this.setState({ books });
-            })
+            if (query.length > 0) {
+                BooksAPI.search(query, 20).then((books) => {
+                    this.setState({ books });
+                });
+                showingBooks = books.slice();
+            }
+            else {
+                //books.length = 0;
+                //this.setState({ books: books });
+            }
         } 
 
-        showingBooks = books
+        console.log(`query length: ${query.length}`);
+        console.log(`books length: ${books.length}`);
+        console.log(`showingBooks length: ${showingBooks.length}`);
+
+        //showingBooks = books;
 
         return (
             <div className="search-books">
