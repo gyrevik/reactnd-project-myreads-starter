@@ -24,8 +24,9 @@ class SearchBooks extends Component {
     render() {
         //debugger
         let { query, books } = this.state;
+        //let { query } = this.state;
 
-        let showingBooks = []    //, showingBooksByTitle, showingBooksByAuthors
+        let showingBooks = [];    //, showingBooksByTitle, showingBooksByAuthors
         if (query) {
             //const match = new RegExp(escapeRegExp(query), 'i')
             //showingBooksByTitle = books.filter((book) => match.test(book.title))
@@ -36,6 +37,7 @@ class SearchBooks extends Component {
             if (query.length > 0) {
                 BooksAPI.search(query, 20).then((books) => {
                     this.setState({ books });
+                    //showingBooks = books.slice();
                 });
                 showingBooks = books.slice();
             }
