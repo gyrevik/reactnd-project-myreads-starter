@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import ListBooks from './ListBooks'
+import Book from './Book'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -25,9 +25,12 @@ class BooksApp extends React.Component {
     }
 
     updateShelf = (shelf) => {
-        debugger;
-        console.log(`shelf in updateShelf: ${shelf}`);
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
+        if (this.props.book)
+          console.log(`App.js: this.props.book.id: ${this.props.book.id}`);
+        else
+          console.log(`App.js: this.props.book is undefined`);
+
         if (this.props.value) {
             console.log(`calling update with 
                 this.props.value.id: ${this.props.value.id}
@@ -42,9 +45,17 @@ class BooksApp extends React.Component {
             });
         }
         else
-            console.log('this.props.value is undefined')
+            console.log('App.js: this.props.value is undefined');
     }
 
+    handleBook = (book) => {
+        console.log(`App.js.handleBook book.id: ${book.id}`);
+        //this.setState((state) => ({
+          //contacts: state.contacts.filter((c) => c.id !== contact.id)
+        //}))
+
+        //ContactsAPI.remove(contact)
+    }
 
     render() {
         return (
@@ -71,9 +82,18 @@ class BooksApp extends React.Component {
                             </div>
                         </div>
                         <div className="search-books-results">
-                            <ListBooks books={this.state.books}
-                                onChangeValue={this.updateShelf}
-                            />
+                            <ol className="books-grid">          
+                            {
+                                this.state.books && this.state.books.length > 0 && (
+                                    this.state.books.map((book) => (
+                                        <Book key={book.id} book={book}
+                                            onChangeValue={this.updateShelf}
+                                            onClickBook={this.handleBook}
+                                        />
+                                    ))
+                                )
+                            }
+                            </ol>
                         </div>
                     </div>
                 )}/>
