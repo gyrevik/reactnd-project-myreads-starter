@@ -25,6 +25,9 @@ class BooksApp extends React.Component {
     }
 
     updateShelf = (shelf) => {
+        debugger;
+        console.log(`shelf in updateShelf: ${shelf}`);
+        console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
         if (this.props.value) {
             console.log(`calling update with 
                 this.props.value.id: ${this.props.value.id}
