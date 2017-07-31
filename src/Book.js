@@ -12,7 +12,7 @@ function Book(props) {
                     }}>
                 </div>
                 <div className="book-shelf-changer">
-                    <select>
+                    <select defaultValue={props.value.shelf}>
                         <option value="none" disabled>Move to...</option>
                         <option value="currentlyReading">Currently Reading</option>
                         <option value="wantToRead">Want to Read</option>
