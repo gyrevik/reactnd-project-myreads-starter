@@ -18,7 +18,6 @@ class SearchBooks extends Component {
                 this.setState({ books });
             });
         }
-        console.log(this.state.books);
         //debugger;
     }
 
