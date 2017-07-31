@@ -24,6 +24,25 @@ class BooksApp extends React.Component {
         //debugger;
     }
 
+    updateShelf = (shelf) => {
+        if (this.props.value) {
+            console.log(`calling update with 
+                this.props.value.id: ${this.props.value.id}
+                and shelf: ${shelf}`);
+
+            BooksAPI.update(this.props.value, shelf).then((msg) => {
+                console.log(`shelf update api result: 
+                    currently reading: ${msg.currentlyReading && msg.currentlyReading.join(',')}
+                    want to read: ${msg.wantToRead && msg.wantToRead.join(',')}
+                    read: ${msg.read && msg.read.join(',')}`);
+                //debugger;
+            });
+        }
+        else
+            console.log('this.props.value is undefined')
+    }
+
+
     render() {
         return (
             <div className="app">
@@ -49,7 +68,9 @@ class BooksApp extends React.Component {
                             </div>
                         </div>
                         <div className="search-books-results">
-                            <ListBooks books={this.state.books}/>
+                            <ListBooks books={this.state.books}
+                                onChangeValue={this.updateShelf}
+                            />
                         </div>
                     </div>
                 )}/>
