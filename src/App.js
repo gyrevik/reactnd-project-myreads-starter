@@ -9,7 +9,9 @@ class BooksApp extends React.Component {
     state = {
         booksFromSearch: [],
         booksForShelves: [],
-        query: ''
+        query: '',
+        book: {},
+        shelfState: ''
     }
 
     updateQuery = (query) => {
@@ -27,7 +29,14 @@ class BooksApp extends React.Component {
 
     updateShelf = (shelf) => {
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
+        const value = shelf.target.value;
 
+        this.setState((state) => ({
+          shelfState: value
+        }));
+
+        console.log(`BookApp.updateShelf -> this.state.shelfState: ${this.state.shelfState}`);
+        debugger;
         /*
         BooksAPI.update(need book or id here, shelf).then((msg) => {
             console.log(`shelf update api result: 
@@ -39,13 +48,19 @@ class BooksApp extends React.Component {
         */
     }
 
+    /*changeShelf = (shelf, book) => {
+      debugger;
+      console.log(`App.changeShelf: shelf(${shelf.target.value}), book.id(${book.id})`);
+    }*/
+
     handleBook = (book) => {
         console.log(`App.js.handleBook book.id: ${book.id}`);
-        //this.setState((state) => ({
-          //contacts: state.contacts.filter((c) => c.id !== contact.id)
-        //}))
+        
+        this.setState((state) => ({
+          book: book
+        }));
 
-        //ContactsAPI.remove(contact)
+        console.log(`BookApp.handleBook -> this.state.book.id: ${this.state.book.id}`);
     }
 
     render() {
@@ -81,6 +96,7 @@ class BooksApp extends React.Component {
                                         <Book key={book.id} book={book}
                                             onChangeValue={this.updateShelf}
                                             onClickBook={this.handleBook}
+                                            onChangeShelf={this.changeShelf}
                                         />
                                     ))
                                 )
