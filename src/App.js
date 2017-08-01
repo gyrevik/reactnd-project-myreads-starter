@@ -7,18 +7,19 @@ import './App.css'
 
 class BooksApp extends React.Component {
     state = {
-        books: [],
+        booksFromSearch: [],
+        booksForShelves: [],
         query: ''
     }
 
     updateQuery = (query) => {
         this.setState({ query: query })
         console.log(query)
-        //this.setState({books: []});
+        //let { booksFromSearch } = this.state;
 
         if (query.length > 0) {
-            BooksAPI.search(query, 20).then((books) => {
-                this.setState({ books });
+            BooksAPI.search(query, 20).then((booksFromSearch) => {
+                this.setState({ booksFromSearch });
             });
         }
         //debugger;
@@ -26,26 +27,16 @@ class BooksApp extends React.Component {
 
     updateShelf = (shelf) => {
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
-        if (this.props.book)
-          console.log(`App.js: this.props.book.id: ${this.props.book.id}`);
-        else
-          console.log(`App.js: this.props.book is undefined`);
 
-        if (this.props.value) {
-            console.log(`calling update with 
-                this.props.value.id: ${this.props.value.id}
-                and shelf: ${shelf}`);
-
-            BooksAPI.update(this.props.value, shelf).then((msg) => {
-                console.log(`shelf update api result: 
-                    currently reading: ${msg.currentlyReading && msg.currentlyReading.join(',')}
-                    want to read: ${msg.wantToRead && msg.wantToRead.join(',')}
-                    read: ${msg.read && msg.read.join(',')}`);
-                //debugger;
-            });
-        }
-        else
-            console.log('App.js: this.props.value is undefined');
+        /*
+        BooksAPI.update(need book or id here, shelf).then((msg) => {
+            console.log(`shelf update api result: 
+                currently reading: ${msg.currentlyReading && msg.currentlyReading.join(',')}
+                want to read: ${msg.wantToRead && msg.wantToRead.join(',')}
+                read: ${msg.read && msg.read.join(',')}`);
+            //debugger;
+        });
+        */
     }
 
     handleBook = (book) => {
@@ -58,6 +49,7 @@ class BooksApp extends React.Component {
     }
 
     render() {
+        const { booksFromSearch } = this.state;
         return (
             <div className="app">
                 <Route path="/search" render={() => (
@@ -84,8 +76,8 @@ class BooksApp extends React.Component {
                         <div className="search-books-results">
                             <ol className="books-grid">          
                             {
-                                this.state.books && this.state.books.length > 0 && (
-                                    this.state.books.map((book) => (
+                                booksFromSearch && booksFromSearch.length > 0 && (
+                                    booksFromSearch.map((book) => (
                                         <Book key={book.id} book={book}
                                             onChangeValue={this.updateShelf}
                                             onClickBook={this.handleBook}
