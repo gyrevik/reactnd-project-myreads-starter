@@ -6,6 +6,17 @@ import Book from './Book'
 import './App.css'
 
 class BooksApp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            color: props.initialColor
+        };
+
+        BooksAPI.getAll().then((booksForShelves) => {
+                this.setState({ booksForShelves });
+        });
+    }
+
     state = {
         booksFromSearch: [],
         booksForShelves: [],
@@ -140,7 +151,7 @@ class BooksApp extends React.Component {
     }
 
     render() {
-        const { booksFromSearch } = this.state;
+        const { booksFromSearch, booksForShelves } = this.state;
         return (
             <div className="app">
                 <Route path="/search" render={() => (
@@ -198,6 +209,24 @@ class BooksApp extends React.Component {
 
                           <div className="bookshelf-books">
                             <ol className="books-grid">
+
+
+                            {
+                                booksForShelves && booksForShelves.length > 0 && (
+                                    booksForShelves.map((book) => (
+                                        <Book key={book.id} book={book}
+                                            onChangeValue={this.updateShelf}
+                                            onClickBook={this.handleBook}
+                                            onChangeShelf={this.changeShelf}
+                                        />
+                                    ))
+                                )
+                            }
+
+
+
+
+
                               <li>
                                 <div className="book">
                                   <div className="book-top">
