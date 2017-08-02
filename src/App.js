@@ -36,10 +36,6 @@ class BooksApp extends React.Component {
 
             console.log(`booksAll.length: ${booksAll.length}`);
         });
-            
-        //this.setState({ booksCurrentlyReading: cr });
-        //this.setState({ booksWantToRead: wtr });
-        //this.setState({ booksRead: r });
     }
 
     updateQuery = (query) => {
@@ -60,7 +56,7 @@ class BooksApp extends React.Component {
         const value = shelf.target.value;
 
         this.setState((state) => ({
-          shelfState: value
+            shelfState: value
         }));
 
         this.myState.shelfState = value;
@@ -125,6 +121,10 @@ class BooksApp extends React.Component {
         console.log('before updateBookArray');
         this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book.id);
         console.log('after updateBookArray');
+
+        this.setState((booksFromSearch) => ({ 
+            booksFromSearch: this.myState.booksFromSearch
+        }));
     }
 
     updateBookArray(array, shelf, bookId) {
