@@ -89,12 +89,12 @@ class BooksApp extends React.Component {
         console.log(`BookApp.handleBook -> this.myState.book.shelf: ${this.myState.book.shelf}`);
         console.log(`BookApp.handleBook -> this.myState.shelfState: ${this.myState.shelfState}`);
 
-        let shelfUpdated = false;
+        //let shelfUpdated = false;
         console.log('*************************************************');
         console.log('myState code:')
-        console.log(`shelf updated: ${shelfUpdated}`);
+        //console.log(`shelf updated: ${shelfUpdated}`);
 
-        shelfUpdated = false;
+        //shelfUpdated = false;
         this.myState.booksFromSearch = this.state.booksFromSearch.slice();
         //debugger;
         if (++this.myState.handleBookCounter !== this.myState.shelfUpdateCounter) {
@@ -107,31 +107,37 @@ class BooksApp extends React.Component {
         //debugger;
         console.log(`books in state.booksFromSearch:`);
         console.log(this.state.booksFromSearch.length);
-        for (let i = 0; i < booksFromSearch.length; i++)
-          console.log(booksFromSearch[i].id);
+        //for (let i = 0; i < booksFromSearch.length; i++)
+        //  console.log(booksFromSearch[i].id);
         
         console.log(`myState.booksFromSearch.length: ${this.myState.booksFromSearch.length}`);
         console.log(this.myState.booksFromSearch.length);
         
-        for (let i = 0; i < this.myState.booksFromSearch.length; i++) {
+        /*for (let i = 0; i < this.myState.booksFromSearch.length; i++) {
             let currentBook = this.myState.booksFromSearch[i];
             if (currentBook.id === this.myState.book.id) {
                 console.log(`Updating shelf for ${currentBook.title} from ${currentBook.shelf} to ${this.myState.shelfState}`);
                 currentBook.shelf = this.myState.shelfState;
-                shelfUpdated = true;
+                //shelfUpdated = true;
             }
-        }
+        }*/
 
-        console.log(`shelf updated: ${shelfUpdated}`);
+        console.log('before updateBookArray');
+        this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book.id);
+        console.log('after updateBookArray');
     }
 
     updateBookArray(array, shelf, bookId) {
+        console.log(`array.length: ${array.length}, shelf: ${shelf}, bookId: ${bookId}`);
+        let updatedBook = false;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === bookId) {
                 console.log(`Updating shelf for book id ${bookId} to ${shelf}`);
                 array[i].shelf = shelf;
+                updatedBook = true;
             }
         }
+        console.log(`updatedBook: ${updatedBook}`);
     }
 
     render() {
