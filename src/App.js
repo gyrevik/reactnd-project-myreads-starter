@@ -30,10 +30,12 @@ class BooksApp extends React.Component {
         handleBookCounter: 0
     }
 
-    componentDidMount() {    
+    componentDidMount() {
+        console.log('getting all books')    
         BooksAPI.getAll().then((booksAll) => {
             this.setState({ booksAll });
 
+            console.log('got all books');
             console.log(`booksAll.length: ${booksAll.length}`);
         });
     }
@@ -69,7 +71,7 @@ class BooksApp extends React.Component {
 
     handleBook = (book) => {
         console.log(`BookApp.handleBook book.id: ${book.id}`);
-        let booksFromSearch = this.state.booksFromSearch;
+        //let booksFromSearch = this.state.booksFromSearch;
 
         this.setState((state) => ({
             book: book
@@ -92,6 +94,7 @@ class BooksApp extends React.Component {
 
         //shelfUpdated = false;
         this.myState.booksFromSearch = this.state.booksFromSearch.slice();
+        this.myState.booksAll = this.state.booksAll.slice();
         //debugger;
         if (++this.myState.handleBookCounter !== this.myState.shelfUpdateCounter) {
             console.log('shelf has not been updated so will not update book');
@@ -118,16 +121,23 @@ class BooksApp extends React.Component {
             }
         }*/
 
-        console.log('before updateBookArray');
         this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book.id);
-        console.log('after updateBookArray');
+        this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book.id);
+        
 
         this.setState((booksFromSearch) => ({ 
             booksFromSearch: this.myState.booksFromSearch
         }));
+
+        this.setState((booksAll) => ({ 
+            booksAll: this.myState.booksAll
+        }));
     }
 
     updateBookArray(array, shelf, bookId) {
+        if (!array)
+            return;
+
         console.log(`array.length: ${array.length}, shelf: ${shelf}, bookId: ${bookId}`);
         let updatedBook = false;
         for (let i = 0; i < array.length; i++) {
@@ -141,18 +151,17 @@ class BooksApp extends React.Component {
     }
 
     render() {
-        const { booksFromSearch, booksCurrentlyReading, booksWantToRead, booksRead } = this.state;
-        console.log(`this.state.booksAll.length: ${this.state.booksAll.length}`);
+        const { booksAll, booksFromSearch } = this.state;
 
         let cr = this.state.booksAll.filter(function(book) {
             return book.shelf === 'currentlyReading';
         })
 
-        let wtr = this.state.booksAll.filter(function(book) {
+        let wtr = booksAll.filter(function(book) {
             return book.shelf === 'wantToRead';
         })
 
-        let r = this.state.booksAll.filter(function(book) {
+        let r = booksAll.filter(function(book) {
             return book.shelf === 'read';
         })
 
