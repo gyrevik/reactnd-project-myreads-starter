@@ -74,17 +74,10 @@ class BooksApp extends React.Component {
     handleBook = (book) => {
         console.log(`BookApp.handleBook book.id: ${book.id}`);
         let booksFromSearch = this.state.booksFromSearch;
-        console.log(this.state.booksFromSearch.length);
-        console.log(this.state.booksFromSearch[0].id);
-        //debugger;
 
         this.setState((state) => ({
             book: book
         }));
-
-        console.log(this.state.booksFromSearch.length);
-        console.log(this.state.booksFromSearch[0].id);
-        //debugger;
 
         this.myState.book = book;
 
@@ -97,15 +90,6 @@ class BooksApp extends React.Component {
         console.log(`BookApp.handleBook -> this.myState.shelfState: ${this.myState.shelfState}`);
 
         let shelfUpdated = false;
-        /*for (let b in this.state.booksFromSearch) {
-            if (b.id === this.state.book.id) {
-                console.log(`Updating shelf for ${this.state.book.title} from ${b.shelf} to ${this.state.book.shelfState}`);
-                b.shelf = this.state.shelfState;
-                //this.setState({ b.shelf: this.state.shelfState });
-                shelfUpdated = true;
-            }
-        }*/
-
         console.log('*************************************************');
         console.log('myState code:')
         console.log(`shelf updated: ${shelfUpdated}`);
@@ -123,17 +107,14 @@ class BooksApp extends React.Component {
         //debugger;
         console.log(`books in state.booksFromSearch:`);
         console.log(this.state.booksFromSearch.length);
-        console.log(this.state.booksFromSearch[0].id);
         for (let i = 0; i < booksFromSearch.length; i++)
           console.log(booksFromSearch[i].id);
         
         console.log(`myState.booksFromSearch.length: ${this.myState.booksFromSearch.length}`);
         console.log(this.myState.booksFromSearch.length);
-        console.log(this.myState.booksFromSearch[0].id);
-        //for (let b in this.myState.booksFromSearch) {
+        
         for (let i = 0; i < this.myState.booksFromSearch.length; i++) {
             let currentBook = this.myState.booksFromSearch[i];
-            console.log(`book id: ${currentBook.id}`);
             if (currentBook.id === this.myState.book.id) {
                 console.log(`Updating shelf for ${currentBook.title} from ${currentBook.shelf} to ${this.myState.shelfState}`);
                 currentBook.shelf = this.myState.shelfState;
@@ -142,16 +123,15 @@ class BooksApp extends React.Component {
         }
 
         console.log(`shelf updated: ${shelfUpdated}`);
+    }
 
-        /*
-        BooksAPI.update(book.id, this.state.shelfState).then((msg) => {
-            console.log(`shelf update api result: 
-                currently reading: ${msg.currentlyReading && msg.currentlyReading.join(',')}
-                want to read: ${msg.wantToRead && msg.wantToRead.join(',')}
-                read: ${msg.read && msg.read.join(',')}`);
-            //debugger;
-        });
-        */
+    updateBookArray(array, shelf, bookId) {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].id === bookId) {
+                console.log(`Updating shelf for book id ${bookId} to ${shelf}`);
+                array[i].shelf = shelf;
+            }
+        }
     }
 
     render() {
