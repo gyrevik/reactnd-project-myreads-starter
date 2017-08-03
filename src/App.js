@@ -42,6 +42,7 @@ class BooksApp extends React.Component {
 
     updateQuery = (query) => {
         this.setState({ query: query })
+        sessionStorage.setItem('query', query);
 
         if (query.length > 0) {
             BooksAPI.search(query, 20).then((booksFromSearch) => {
@@ -107,20 +108,9 @@ class BooksApp extends React.Component {
         //debugger;
         console.log(`books in state.booksFromSearch:`);
         console.log(this.state.booksFromSearch.length);
-        //for (let i = 0; i < booksFromSearch.length; i++)
-        //  console.log(booksFromSearch[i].id);
         
         console.log(`myState.booksFromSearch.length: ${this.myState.booksFromSearch.length}`);
         console.log(this.myState.booksFromSearch.length);
-        
-        /*for (let i = 0; i < this.myState.booksFromSearch.length; i++) {
-            let currentBook = this.myState.booksFromSearch[i];
-            if (currentBook.id === this.myState.book.id) {
-                console.log(`Updating shelf for ${currentBook.title} from ${currentBook.shelf} to ${this.myState.shelfState}`);
-                currentBook.shelf = this.myState.shelfState;
-                //shelfUpdated = true;
-            }
-        }*/
 
         this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book.id);
         this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book.id);
@@ -184,7 +174,8 @@ class BooksApp extends React.Component {
                                 <input 
                                     type="text" 
                                     placeholder="Search by title or author"
-                                    value={this.state.query}
+                                    //value={this.state.query}
+                                    value={sessionStorage.getItem("query") || ''}
                                     onChange={(event) => this.updateQuery(event.target.value)}
                                 />
                             </div>
