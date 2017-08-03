@@ -54,6 +54,11 @@ class BooksApp extends React.Component {
         }
     }
 
+    /**
+    * @description Responds to query changes and loads new array from 
+    *              search in API
+    * @param {string} query
+    */
     updateQuery = (query) => {
         this.setState({ query: query })
         sessionStorage.setItem('query', query);
@@ -67,6 +72,15 @@ class BooksApp extends React.Component {
         }
     }
 
+    /**
+    * @description Takes a shelf that has been selected in search or
+    *              MyReads and saves it for access by handleBook.
+    *              It updates a counter so that handleBook knows when
+    *              to update a shelf. This is kind of hacky. Could not
+    *              figure out how to make the shelf change event off the
+    *              menu pass bookId in addition to the shelf string.
+    * @param {string} shelf
+    */
     updateShelf = (shelf) => {
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
         const value = shelf.target.value;
@@ -82,6 +96,10 @@ class BooksApp extends React.Component {
         console.log(`BookApp.updateShelf -> this.myState.shelfState: ${this.myState.shelfState}`);
     }
 
+    /**
+    * @description Updates the shelf for a book on a shelf change
+    * @param {object} book
+    */
     handleBook = (book) => {
         console.log(`BookApp.handleBook book.id: ${book.id}`);
 
@@ -120,6 +138,13 @@ class BooksApp extends React.Component {
         }));
     }
 
+    /**
+    * @description Takes an array of books and updates the appropriate book
+    *              in the array based on book.id and the shelf argument
+    * @param {Array} array
+    * @param {string} shelf
+    * @param {object} book
+    */
     updateBookArray(array, shelf, book) {
         if (!array)
             return;
@@ -141,6 +166,13 @@ class BooksApp extends React.Component {
         }
     }
 
+    /**
+    * @description Renders MyReads or Search based on Route.
+    *              Chops up books from the getAll API call into three
+    *              arrays for the shelves. Uses a Book component to
+    *              render books.
+    * @returns {string}
+    */
     render() {
         const { booksAll, booksFromSearch } = this.state;
 

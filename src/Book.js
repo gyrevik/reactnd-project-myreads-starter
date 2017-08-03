@@ -1,6 +1,9 @@
 import React from 'react'
 
-// search on j and get JavaScript and JQuery from API with Want to Read selected
+/**
+* @description Represents a book
+* @param {object} book - The book object to render
+*/
 class Book extends React.Component {     
     render () {  
         const { book, onClickBook } = this.props;
