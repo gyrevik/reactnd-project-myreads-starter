@@ -62,10 +62,6 @@ class BooksApp extends React.Component {
         }
     }
 
-    //window.onbeforeunload = (e) => {
-        // I'm about to refresh! do something...
-    //};
-
     updateShelf = (shelf) => {
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
         const value = shelf.target.value;
@@ -79,12 +75,10 @@ class BooksApp extends React.Component {
 
         console.log(`BookApp.updateShelf -> this.state.shelfState: ${this.state.shelfState}`);
         console.log(`BookApp.updateShelf -> this.myState.shelfState: ${this.myState.shelfState}`);
-        //debugger;
     }
 
     handleBook = (book) => {
         console.log(`BookApp.handleBook book.id: ${book.id}`);
-        //let booksFromSearch = this.state.booksFromSearch;
 
         this.setState((state) => ({
             book: book
@@ -92,23 +86,9 @@ class BooksApp extends React.Component {
 
         this.myState.book = book;
 
-        console.log(`BookApp.handleBook -> this.state.book.id: ${this.state.book.id}`);
-        console.log(`BookApp.handleBook -> this.state.book.shelf: ${this.state.book.shelf}`);
-        console.log(`BookApp.handleBook -> this.state.shelfState: ${this.state.shelfState}`);
-        
-        console.log(`BookApp.handleBook -> this.myState.book.id: ${this.myState.book.id}`);
-        console.log(`BookApp.handleBook -> this.myState.book.shelf: ${this.myState.book.shelf}`);
-        console.log(`BookApp.handleBook -> this.myState.shelfState: ${this.myState.shelfState}`);
-
-        //let shelfUpdated = false;
-        console.log('*************************************************');
-        console.log('myState code:')
-        //console.log(`shelf updated: ${shelfUpdated}`);
-
-        //shelfUpdated = false;
         this.myState.booksFromSearch = this.state.booksFromSearch.slice();
         this.myState.booksAll = this.state.booksAll.slice();
-        //debugger;
+        
         if (++this.myState.handleBookCounter !== this.myState.shelfUpdateCounter) {
             console.log('shelf has not been updated so will not update book');
             return;
@@ -116,7 +96,6 @@ class BooksApp extends React.Component {
             console.log('shelf has been updated so will update book');
         }
 
-        //debugger;
         console.log(`books in state.booksFromSearch:`);
         console.log(this.state.booksFromSearch.length);
         
@@ -210,72 +189,72 @@ class BooksApp extends React.Component {
                 )}/>
               
                 <Route exact path="/" render={() => (
-                  <div className="list-books">
-                    <div className="list-books-title">
-                      <h1>MyReads</h1>
-                    </div>
-                    <div className="list-books-content">
-                      <div>
-                        <div className="bookshelf">
-                          <h2 className="bookshelf-title">Currently Reading</h2>
-                          <div className="bookshelf-books">
-                            <ol className="books-grid">
-                            {
-                                cr && cr.length > 0 && (
-                                    cr.map((book) => (
-                                        <Book key={book.id} book={book}
-                                            onChangeValue={this.updateShelf}
-                                            onClickBook={this.handleBook}
-                                            onChangeShelf={this.changeShelf}
-                                        />
-                                    ))
-                                )
-                            }
-                            </ol>
-                          </div>
+                    <div className="list-books">
+                        <div className="list-books-title">
+                            <h1>MyReads</h1>
                         </div>
-                        <div className="bookshelf">
-                          <h2 className="bookshelf-title">Want to Read</h2>
-                          <div className="bookshelf-books">
-                            <ol className="books-grid">  
-                            {
-                                wtr && wtr.length > 0 && (
-                                    wtr.map((book) => (
-                                        <Book key={book.id} book={book}
-                                            onChangeValue={this.updateShelf}
-                                            onClickBook={this.handleBook}
-                                            onChangeShelf={this.changeShelf}
-                                        />
-                                    ))
-                                )
-                            }
-                            </ol>
-                          </div>
+                        <div className="list-books-content">
+                            <div>
+                                <div className="bookshelf">
+                                    <h2 className="bookshelf-title">Currently Reading</h2>
+                                    <div className="bookshelf-books">
+                                        <ol className="books-grid">
+                                        {
+                                            cr && cr.length > 0 && (
+                                                cr.map((book) => (
+                                                    <Book key={book.id} book={book}
+                                                        onChangeValue={this.updateShelf}
+                                                        onClickBook={this.handleBook}
+                                                        onChangeShelf={this.changeShelf}
+                                                    />
+                                                ))
+                                            )
+                                        }
+                                        </ol>
+                                    </div>
+                                </div>
+                                <div className="bookshelf">
+                                    <h2 className="bookshelf-title">Want to Read</h2>
+                                    <div className="bookshelf-books">
+                                        <ol className="books-grid">  
+                                        {
+                                            wtr && wtr.length > 0 && (
+                                                wtr.map((book) => (
+                                                    <Book key={book.id} book={book}
+                                                        onChangeValue={this.updateShelf}
+                                                        onClickBook={this.handleBook}
+                                                        onChangeShelf={this.changeShelf}
+                                                    />
+                                                ))
+                                            )
+                                        }
+                                        </ol>
+                                    </div>
+                                </div>
+                                <div className="bookshelf">
+                                    <h2 className="bookshelf-title">Read</h2>
+                                    <div className="bookshelf-books">
+                                        <ol className="books-grid">
+                                        {
+                                            r && r.length > 0 && (
+                                                r.map((book) => (
+                                                    <Book key={book.id} book={book}
+                                                        onChangeValue={this.updateShelf}
+                                                        onClickBook={this.handleBook}
+                                                        onChangeShelf={this.changeShelf}
+                                                    />
+                                                ))
+                                            )
+                                        }
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="bookshelf">
-                          <h2 className="bookshelf-title">Read</h2>
-                          <div className="bookshelf-books">
-                            <ol className="books-grid">
-                            {
-                                r && r.length > 0 && (
-                                    r.map((book) => (
-                                        <Book key={book.id} book={book}
-                                            onChangeValue={this.updateShelf}
-                                            onClickBook={this.handleBook}
-                                            onChangeShelf={this.changeShelf}
-                                        />
-                                    ))
-                                )
-                            }
-                            </ol>
-                          </div>
+                        <div className="open-search">
+                            <Link to="/search" className="open-search">Add a book</Link>
                         </div>
-                      </div>
                     </div>
-                    <div className="open-search">
-                      <Link to="/search" className="open-search">Add a book</Link>
-                    </div>
-                  </div>
                 )}/>
             </div>
         )
