@@ -30,6 +30,11 @@ class BooksApp extends React.Component {
         handleBookCounter: 0
     }
 
+    /**
+    * @description Initiates array with all books for main page
+    *              Uses sessionStorage to persist search across
+    *              browser refresh
+    */
     componentDidMount() {
         console.log('getting all books')    
         BooksAPI.getAll().then((booksAll) => {
