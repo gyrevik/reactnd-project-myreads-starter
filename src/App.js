@@ -38,6 +38,15 @@ class BooksApp extends React.Component {
             console.log('got all books');
             console.log(`booksAll.length: ${booksAll.length}`);
         });
+
+        // See if we have a query value
+        // (this will only happen if the page is accidentally refreshed -- not sure, see below link)
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+        if (sessionStorage.getItem("query")) {
+            // Restore the contents of the text field
+            //field.value = sessionStorage.getItem("autosave");
+            this.updateQuery(sessionStorage.getItem("query"));
+        }
     }
 
     updateQuery = (query) => {
@@ -51,9 +60,11 @@ class BooksApp extends React.Component {
 
             console.log(this.state.booksFromSearch.length);
         }
-
-        //debugger;
     }
+
+    //window.onbeforeunload = (e) => {
+        // I'm about to refresh! do something...
+    //};
 
     updateShelf = (shelf) => {
         console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
