@@ -102,8 +102,8 @@ class BooksApp extends React.Component {
         console.log(`myState.booksFromSearch.length: ${this.myState.booksFromSearch.length}`);
         console.log(this.myState.booksFromSearch.length);
 
-        this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book.id);
-        this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book.id);
+        this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book);
+        this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book);
         
 
         this.setState((booksFromSearch) => ({ 
@@ -115,20 +115,25 @@ class BooksApp extends React.Component {
         }));
     }
 
-    updateBookArray(array, shelf, bookId) {
+    updateBookArray(array, shelf, book) {
         if (!array)
             return;
 
-        console.log(`array.length: ${array.length}, shelf: ${shelf}, bookId: ${bookId}`);
+        console.log(`array.length: ${array.length}, shelf: ${shelf}, bookId: ${book.id}`);
         let updatedBook = false;
         for (let i = 0; i < array.length; i++) {
-            if (array[i].id === bookId) {
-                console.log(`Updating shelf for book id ${bookId} to ${shelf}`);
+            if (array[i].id === book.id) {
+                console.log(`Updating shelf for book id ${book.id} to ${shelf}`);
                 array[i].shelf = shelf;
                 updatedBook = true;
             }
         }
         console.log(`updatedBook: ${updatedBook}`);
+
+        if (!updatedBook) {
+            array.push(book);
+            console.log('added book');
+        }
     }
 
     render() {
