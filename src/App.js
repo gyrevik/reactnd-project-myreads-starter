@@ -129,12 +129,6 @@ class BooksApp extends React.Component {
             console.log('shelf has been updated so will update book');
         }
 
-        console.log(`books in state.booksFromSearch:`);
-        console.log(this.state.booksFromSearch.length);
-        
-        console.log(`state.booksFromSearch.length: ${this.state.booksFromSearch.length}`);
-        console.log(this.state.booksFromSearch.length);
-
         this.updateBookArray(this.state.booksFromSearch, this.state.shelfState, book);
         
         if (!this.updateBookArray(this.state.booksAll, this.state.shelfState, book)) {
