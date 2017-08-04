@@ -231,7 +231,6 @@ class BooksApp extends React.Component {
                                         <Book key={book.id} book={book}
                                             onChangeValue={this.updateShelf}
                                             onClickBook={this.handleBook}
-                                            onChangeShelf={this.changeShelf}
                                         />
                                     ))
                                 )
