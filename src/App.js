@@ -16,14 +16,6 @@ class BooksApp extends React.Component {
 
         query: '',
         book: {},
-        shelfState: ''
-    }
-
-    myState = {
-        booksFromSearch: [],
-        booksForShelves: [],
-        query: '',
-        book: {},
         shelfState: '',
 
         shelfUpdateCounter: 0,
@@ -47,8 +39,8 @@ class BooksApp extends React.Component {
             });
         }
         else {
-            this.myState.booksAll = JSON.parse(sessionStorage.getItem("booksAll"));
-            this.setState({ booksAll: this.myState.booksAll});
+            const booksAll = JSON.parse(sessionStorage.getItem("booksAll"));
+            this.setState({ booksAll: booksAll});
         }
 
         // See if we have a query value
@@ -96,11 +88,20 @@ class BooksApp extends React.Component {
             shelfState: value
         }));
 
-        this.myState.shelfState = value;
-        this.myState.shelfUpdateCounter = this.myState.handleBookCounter + 1;
+        this.setState((state) => ({
+            shelfState: value
+        }));
+
+        let hbc = this.state.handleBookCounter;
+        this.setState((state) => ({
+            handleBookCounter: ++hbc
+        }));
+
+        this.setState((state) => ({
+            shelfUpdateCounter: hbc
+        }));
 
         console.log(`BookApp.updateShelf -> this.state.shelfState: ${this.state.shelfState}`);
-        console.log(`BookApp.updateShelf -> this.myState.shelfState: ${this.myState.shelfState}`);
     }
 
     /**
@@ -115,13 +116,13 @@ class BooksApp extends React.Component {
         this.setState((state) => ({
             book: book
         }));
-
-        this.myState.book = book;
-
-        this.myState.booksFromSearch = this.state.booksFromSearch.slice();
-        this.myState.booksAll = this.state.booksAll.slice();
         
-        if (++this.myState.handleBookCounter !== this.myState.shelfUpdateCounter) {
+        let hbc = this.state.handleBookCounter;
+        this.setState((state) => ({
+            handleBookCounter: ++hbc
+        }));
+
+        if (hbc !== this.state.shelfUpdateCounter) {
             console.log('shelf has not been updated so will not update book');
             return;
         } else {
@@ -131,25 +132,22 @@ class BooksApp extends React.Component {
         console.log(`books in state.booksFromSearch:`);
         console.log(this.state.booksFromSearch.length);
         
-        console.log(`myState.booksFromSearch.length: ${this.myState.booksFromSearch.length}`);
-        console.log(this.myState.booksFromSearch.length);
+        console.log(`state.booksFromSearch.length: ${this.state.booksFromSearch.length}`);
+        console.log(this.state.booksFromSearch.length);
 
-        this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book);
+        this.updateBookArray(this.state.booksFromSearch, this.state.shelfState, book);
         
-        if (!this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book)) {
-            this.myState.booksAll.push(book);
+        if (!this.updateBookArray(this.state.booksAll, this.state.shelfState, book)) {
+            let ba = this.state.booksAll.slice();
+            ba.push(book);
+            this.setState((state) => ({
+              booksAll: ba
+            }));
+
             console.log('added book');
         }
-        
-        this.setState((booksFromSearch) => ({ 
-            booksFromSearch: this.myState.booksFromSearch
-        }));
 
-        this.setState((booksAll) => ({ 
-            booksAll: this.myState.booksAll
-        }));
-
-        sessionStorage.setItem('booksAll', JSON.stringify(this.myState.booksAll));
+        sessionStorage.setItem('booksAll', JSON.stringify(this.state.booksAll));
     }
 
     /**
