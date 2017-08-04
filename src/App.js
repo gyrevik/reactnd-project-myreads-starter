@@ -126,9 +126,12 @@ class BooksApp extends React.Component {
         console.log(this.myState.booksFromSearch.length);
 
         this.updateBookArray(this.myState.booksFromSearch, this.myState.shelfState, book);
-        this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book);
         
-
+        if (!this.updateBookArray(this.myState.booksAll, this.myState.shelfState, book)) {
+            this.myState.booksAll.push(book);
+            console.log('added book');
+        }
+        
         this.setState((booksFromSearch) => ({ 
             booksFromSearch: this.myState.booksFromSearch
         }));
@@ -144,6 +147,7 @@ class BooksApp extends React.Component {
     * @param {Array} array
     * @param {string} shelf
     * @param {object} book
+    * @returns {Boolean}
     */
     updateBookArray(array, shelf, book) {
         if (!array)
@@ -160,10 +164,7 @@ class BooksApp extends React.Component {
         }
         console.log(`updatedBook: ${updatedBook}`);
 
-        if (!updatedBook) {
-            array.push(book);
-            console.log('added book');
-        }
+        return updatedBook;
     }
 
     /**
