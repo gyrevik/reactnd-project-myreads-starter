@@ -36,20 +36,26 @@ class BooksApp extends React.Component {
     *              browser refresh
     */
     componentDidMount() {
-        console.log('getting all books')    
-        BooksAPI.getAll().then((booksAll) => {
-            this.setState({ booksAll });
+        console.log('getting all books')  
+        if (!sessionStorage.getItem("booksAll")) {
+            BooksAPI.getAll().then((booksAll) => {
+                this.setState({ booksAll });
 
-            console.log('got all books');
-            console.log(`booksAll.length: ${booksAll.length}`);
-        });
+                sessionStorage.setItem('booksAll', JSON.stringify(booksAll));
+                console.log('got all books');
+                console.log(`booksAll.length: ${booksAll.length}`);
+            });
+        }
+        else {
+            this.myState.booksAll = JSON.parse(sessionStorage.getItem("booksAll"));
+            this.setState({ booksAll: this.myState.booksAll});
+        }
 
         // See if we have a query value
         // (this will only happen if the page is accidentally refreshed -- not sure, see below link)
         // https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
         if (sessionStorage.getItem("query")) {
             // Restore the contents of the text field
-            //field.value = sessionStorage.getItem("autosave");
             this.updateQuery(sessionStorage.getItem("query"));
         }
     }
@@ -98,6 +104,8 @@ class BooksApp extends React.Component {
 
     /**
     * @description Updates the shelf for a book on a shelf change
+    *              and uses sessionStorage to keep shelf state across
+    *              browser refresh
     * @param {object} book
     */
     handleBook = (book) => {
@@ -139,6 +147,8 @@ class BooksApp extends React.Component {
         this.setState((booksAll) => ({ 
             booksAll: this.myState.booksAll
         }));
+
+        sessionStorage.setItem('booksAll', JSON.stringify(this.myState.booksAll));
     }
 
     /**
