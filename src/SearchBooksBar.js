@@ -2,8 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 class SearchBooksBar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleQuery = this.handleQuery.bind(this);
+    }
+
     handleQuery(e) {
-        this.props.onQueryChange = (e.target.value);
+        this.props.onQueryChange(e.target.value);
     }
 
     render() {
@@ -24,7 +29,8 @@ class SearchBooksBar extends React.Component {
                         placeholder="Search by title or author"
                         //value={this.state.query}
                         value={sessionStorage.getItem("query") || ''}
-                        onChange={(event) => this.handleQuery(event.target.value)}
+                        //onChange={(event) => this.handleQuery(event.target.value)}
+                        onChange={this.handleQuery}
                     />
                 </div>
             </div>
