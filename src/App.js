@@ -113,6 +113,11 @@ class BooksApp extends React.Component {
     */
     handleBook = (book) => {
         console.log(`BookApp.handleBook book.id: ${book.id}`);
+        const shelfState = this.state.shelfState;
+        if (shelfState === '') {
+            console.log('empty shelfState in handleBook. May be initial click on menu control. Exiting handleBook event handler');
+            return;
+        }
 
         this.setState((state) => ({
             book: book
