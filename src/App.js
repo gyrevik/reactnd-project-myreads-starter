@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import SearchBooksBar from './SearchBooksBar'
 import Book from './Book'
 import './App.css'
 
@@ -196,6 +197,7 @@ class BooksApp extends React.Component {
             <div className="app">
                 <Route path="/search" render={() => (
                     <div className="search-books">
+                        <SearchBooksBar onQueryChange={this.updateQuery}/>
                         <div className="search-books-bar">
                             <Link to="/" className="close-search">Close</Link>
                             <div className="search-books-input-wrapper">
