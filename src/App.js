@@ -66,13 +66,25 @@ class BooksApp extends React.Component {
     * @param {string} query
     */
     updateQuery = (query) => {
-        this.setState({ query: query })
+        if (sessionStorage.getItem("query") === query) {
+            const booksFromSearch = JSON.parse(sessionStorage.getItem("booksFromSearch"));
+            this.setState((state) =>({
+                booksFromSearch
+            }))
+        }
+        if (this.state.query === query) {
+            console.log(`the query (${query}) has not changed. Exiting updateQuery`);
+            return;
+        }
+        this.setState({ query: query });
         sessionStorage.setItem('query', query);
 
         if (query.length > 0) {
             BooksAPI.search(query, 20).then((booksFromSearch) => {
-                if (booksFromSearch !== this.state.booksFromSearch)
+                if (booksFromSearch !== this.state.booksFromSearch) {
                     this.setState({ booksFromSearch });
+                    sessionStorage.setItem('booksFromSearch', JSON.stringify(booksFromSearch));
+                }
             });
 
             console.log(`booksFromSearch(${query}): ${this.state.booksFromSearch.length}`);
