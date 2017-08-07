@@ -35,13 +35,14 @@ class BooksApp extends React.Component {
                 this.setState({ booksAll });
 
                 sessionStorage.setItem('booksAll', JSON.stringify(booksAll));
-                console.log('got all books');
-                console.log(`booksAll.length: ${booksAll.length}`);
+                console.log(`got all books from API (${booksAll.length} books) and saved to sessionStorage and state`);                
             });
         }
         else {
             const booksAll = JSON.parse(sessionStorage.getItem("booksAll"));
             this.setState({ booksAll: booksAll});
+            console.log(`got booksAll from sessionStorage (${booksAll.length} books) and saved it to state`);
+            this.listBooks(booksAll);
         }
 
         // See if we have a query value
@@ -51,6 +52,12 @@ class BooksApp extends React.Component {
             // Restore the contents of the text field
             this.updateQuery(sessionStorage.getItem("query"));
         }
+    }
+
+    listBooks = (array) => {
+        for(let i = 0; i < array.length; i++) {
+            console.log(`${i}) ${array[i].title}`);
+        };
     }
 
     /**
@@ -68,7 +75,7 @@ class BooksApp extends React.Component {
                     this.setState({ booksFromSearch });
             });
 
-            console.log(this.state.booksFromSearch.length);
+            console.log(`booksFromSearch(${query}): ${this.state.booksFromSearch.length}`);
         }
     }
 
@@ -129,25 +136,57 @@ class BooksApp extends React.Component {
         }));
 
         if (hbc !== this.state.shelfUpdateCounter) {
-            console.log('shelf has not been updated so will not update book');
+            console.log('shelf has not been updated so will not update book, exiting handleBook');
             return;
         } else {
             console.log('shelf has been updated so will update book');
         }
 
-        this.updateBookArray(this.state.booksFromSearch, this.state.shelfState, book);
+        let bfs = this.state.booksFromSearch.slice();
+        this.updateBookArray(bfs, this.state.shelfState, book);
+        this.setState({ booksFromSearch: bfs});
+        sessionStorage.setItem('booksFromSearch', JSON.stringify(bfs));
         
-        if (!this.updateBookArray(this.state.booksAll, this.state.shelfState, book)) {
-            let ba = this.state.booksAll.slice();
+        let ba = this.state.booksAll.slice();
+        if (!this.updateBookArray(ba, this.state.shelfState, book)) {
             ba.push(book);
-            this.setState((state) => ({
-              booksAll: ba
-            }));
 
-            console.log('added book');
+            this.setState((state) => {
+                return { booksAll: ba }
+            });
+
+            //this.setState( (state) => {
+            //    state.booksAll = state.booksAll.concat([book]);
+            //    return state;
+            //});
+
+            //this.setState((state) => {
+            //    return {
+            //        booksAll: [...state.booksAll, book]
+            //    }
+            //})
+
+            //this.setState({ booksAll: ba});
+
+            //let ba = this.state.booksAll.concat([book]);
+            //this.setState({ booksAll: ba});
+            // i understand i don't see state.booksAll updated immediately here
+            // because the above call is async. however, i don't understand why
+            // i also don't see the update immediately for the attempts commented
+            // above this which i thought were synchronous with the function callback
+
+            console.log(`added book (${book.title}) to booksAll (array for shelves)`);
+            console.log('ba (booksAll local copy) array:');
+            this.listBooks(ba);
+            console.log('booksAll from state:');
+            this.listBooks(this.state.booksAll);
         }
 
-        sessionStorage.setItem('booksAll', JSON.stringify(this.state.booksAll));
+        console.log('saving ba to sessionStorage booksAll key');
+        sessionStorage.setItem('booksAll', JSON.stringify(ba));
+
+        //console.log('saving booksAll to sessionStorage');
+        //sessionStorage.setItem('booksAll', JSON.stringify(this.state.booksAll));
     }
 
     /**
