@@ -8,7 +8,7 @@ class Book extends React.Component {
     render () {  
         const { book, onClickBook } = this.props;
         
-        return (     
+        return (
             <li key={book.id} onClick={() => onClickBook(book)}>
                 <div className="book">
                     <div className="book-top">

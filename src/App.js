@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import SearchBooksBar from './SearchBooksBar'
+import SearchBooksResults from './SearchBooksResults'
 import Book from './Book'
 import './App.css'
 
@@ -17,7 +18,7 @@ class BooksApp extends React.Component {
 
         query: '',
         book: {},
-        shelfState: '',
+        shelf: '',
 
         shelfUpdateCounter: 0,
         handleBookCounter: 0
@@ -99,19 +100,21 @@ class BooksApp extends React.Component {
     *              to update a shelf. This is kind of hacky. Could not
     *              figure out how to make the shelf change event off the
     *              menu pass bookId in addition to the shelf string.
-    * @param {string} shelf
+    * @param {object} shelfState
     */
-    updateShelf = (shelf) => {
-        console.log(`App.js: shelf.target.value in updateShelf: ${shelf.target.value}`);
-        const value = shelf.target.value;
+    updateShelf = (shelfState) => {
+        console.log(`updateShelf top: shelfState.target.value in updateShelf: ${shelfState.target.value}`);
 
-        this.setState((state) => ({
-            shelfState: value
-        }));
+        /**********************************************************/
+        /* This way of updating state synchronously seems to work but not really */
+        this.setState({ shelf: shelfState.target.value }, () => { 
+            console.log('new shelf state:', this.state.shelf); // has it here
+        })
 
-        this.setState((state) => ({
-            shelfState: value
-        }));
+        // does not have it here
+        console.log('new shelf state:', this.state.shelf, 'just making sure'); 
+        /**********************************************************/
+        /**********************************************************/
 
         let hbc = this.state.handleBookCounter;
         this.setState((state) => ({
@@ -121,8 +124,6 @@ class BooksApp extends React.Component {
         this.setState((state) => ({
             shelfUpdateCounter: hbc
         }));
-
-        console.log(`BookApp.updateShelf -> this.state.shelfState: ${this.state.shelfState}`);
     }
 
     /**
@@ -132,12 +133,25 @@ class BooksApp extends React.Component {
     * @param {object} book
     */
     handleBook = (book) => {
-        //console.log(`BookApp.handleBook book.title: ${book.title}`);
-        const shelfState = this.state.shelfState;
-        if (shelfState === '') {
-            //console.log('empty shelfState in handleBook. May be initial click on menu control. Exiting handleBook event handler');
+        const shelf = this.state.shelf;
+        if (shelf === '') {
+            console.log('empty shelf in handleBook. May be initial click on menu control. Exiting handleBook event handler');
             return;
         }
+
+        const shelfFromStorage = sessionStorage.getItem("shelf");
+        const bookFromStorage = JSON.parse(sessionStorage.getItem("book"));
+        if (shelfFromStorage && bookFromStorage) {
+            if (book.id === bookFromStorage.id && this.state.shelf === shelfFromStorage) {
+                console.log(`book (${book.title}, id: ${book.id} and shelf (${this.state.shelf})
+                    has not changed from what we have in storage, exiting handleBook`);
+                return;
+            }
+        }
+
+        console.log(`putting book (${book.title}(${book.id})) and shelf (${this.state.shelf}) in sessionStorage`);
+        sessionStorage.setItem('book', JSON.stringify(book));
+        sessionStorage.setItem('shelf', this.state.shelf);
 
         this.setState((state) => ({
             book: book
@@ -156,12 +170,14 @@ class BooksApp extends React.Component {
         }
 
         let bfs = this.state.booksFromSearch.slice();
-        this.updateBookArray(bfs, this.state.shelfState, book);
+        this.updateBookArray(bfs, this.state.shelf, book);
         this.setState({ booksFromSearch: bfs});
+        
         sessionStorage.setItem('booksFromSearch', JSON.stringify(bfs));
+        console.log('handleBook put search into storage and state after shelf update')
         
         let ba = this.state.booksAll.slice();
-        if (!this.updateBookArray(ba, this.state.shelfState, book)) {
+        if (!this.updateBookArray(ba, this.state.shelf, book)) {
             ba.push(book);
 
             this.setState((state) => {
@@ -188,7 +204,7 @@ class BooksApp extends React.Component {
             // i also don't see the update immediately for the attempts commented
             // above this which i thought were synchronous with the function callback
 
-            console.log(`added book (${book.title}) to booksAll (array for shelves)`);
+            console.log(`added book (${book.title}(${book.id})) to booksAll (array for shelves)`);
             //console.log('ba (booksAll local copy) array:');
             //this.listBooks(ba);
             //console.log('booksAll from state:');
@@ -197,9 +213,6 @@ class BooksApp extends React.Component {
 
         console.log('saving ba to sessionStorage booksAll key');
         sessionStorage.setItem('booksAll', JSON.stringify(ba));
-
-        //console.log('saving booksAll to sessionStorage');
-        //sessionStorage.setItem('booksAll', JSON.stringify(this.state.booksAll));
     }
 
     /**
@@ -255,20 +268,10 @@ class BooksApp extends React.Component {
                 <Route path="/search" render={() => (
                     <div className="search-books">
                         <SearchBooksBar onQueryChange={this.updateQuery}/>
-                        <div className="search-books-results">
-                            <ol className="books-grid">          
-                            {
-                                booksFromSearch && booksFromSearch.length > 0 && (
-                                    booksFromSearch.map((book) => (
-                                        <Book key={book.id} book={book}
-                                            onChangeValue={this.updateShelf}
-                                            onClickBook={this.handleBook}
-                                        />
-                                    ))
-                                )
-                            }
-                            </ol>
-                        </div>
+                        <SearchBooksResults 
+                            booksFromSearch={booksFromSearch}
+                            updateShelf={this.updateShelf}
+                            handleBook={this.handleBook}/>
                     </div>
                 )}/>
               
