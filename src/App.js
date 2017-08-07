@@ -42,7 +42,7 @@ class BooksApp extends React.Component {
             const booksAll = JSON.parse(sessionStorage.getItem("booksAll"));
             this.setState({ booksAll: booksAll});
             console.log(`got booksAll from sessionStorage (${booksAll.length} books) and saved it to state`);
-            this.listBooks(booksAll);
+            //this.listBooks(booksAll);
         }
 
         // See if we have a query value
@@ -71,6 +71,7 @@ class BooksApp extends React.Component {
             this.setState((state) =>({
                 booksFromSearch
             }))
+            console.log('loaded state.BooksFromSearch from sessionStorage in updateQuery');
         }
         if (this.state.query === query) {
             console.log(`the query (${query}) has not changed. Exiting updateQuery`);
@@ -131,10 +132,10 @@ class BooksApp extends React.Component {
     * @param {object} book
     */
     handleBook = (book) => {
-        console.log(`BookApp.handleBook book.id: ${book.id}`);
+        //console.log(`BookApp.handleBook book.title: ${book.title}`);
         const shelfState = this.state.shelfState;
         if (shelfState === '') {
-            console.log('empty shelfState in handleBook. May be initial click on menu control. Exiting handleBook event handler');
+            //console.log('empty shelfState in handleBook. May be initial click on menu control. Exiting handleBook event handler');
             return;
         }
 
@@ -188,10 +189,10 @@ class BooksApp extends React.Component {
             // above this which i thought were synchronous with the function callback
 
             console.log(`added book (${book.title}) to booksAll (array for shelves)`);
-            console.log('ba (booksAll local copy) array:');
-            this.listBooks(ba);
-            console.log('booksAll from state:');
-            this.listBooks(this.state.booksAll);
+            //console.log('ba (booksAll local copy) array:');
+            //this.listBooks(ba);
+            //console.log('booksAll from state:');
+            //this.listBooks(this.state.booksAll);
         }
 
         console.log('saving ba to sessionStorage booksAll key');
@@ -217,7 +218,7 @@ class BooksApp extends React.Component {
         let updatedBook = false;
         for (let i = 0; i < array.length; i++) {
             if (array[i].id === book.id) {
-                console.log(`Updating shelf for book id ${book.id} to ${shelf}`);
+                console.log(`Updating shelf for ${book.title} to ${shelf}`);
                 array[i].shelf = shelf;
                 updatedBook = true;
             }
