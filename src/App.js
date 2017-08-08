@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import SearchBooksBar from './SearchBooksBar'
 import SearchBooksResults from './SearchBooksResults'
+import Shelf from './Shelf'
 import Book from './Book'
 import './App.css'
 
@@ -261,6 +262,9 @@ class BooksApp extends React.Component {
                         </div>
                         <div className="list-books-content">
                             <div>
+                                <Shelf books={cr} shelfTitle='Currently Reading'
+                                    updateShelf={this.updateShelf}
+                                    handleBook={this.handleBook}/>
                                 <div className="bookshelf">
                                     <h2 className="bookshelf-title">Currently Reading</h2>
                                     <div className="bookshelf-books">
