@@ -5,7 +5,6 @@ import * as BooksAPI from './BooksAPI'
 import SearchBooksBar from './SearchBooksBar'
 import SearchBooksResults from './SearchBooksResults'
 import Shelf from './Shelf'
-import Book from './Book'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -18,7 +17,6 @@ class BooksApp extends React.Component {
         booksRead: [],
 
         query: '',
-        book: {},
         shelf: '',
 
         shelfUpdateCounter: 0,
@@ -213,10 +211,7 @@ class BooksApp extends React.Component {
 
     updateEmptyShelvesToNone(array) {
         array.forEach(function(book) {
-            (typeof book.shelf == 'undefined') && (book.shelf = 'none')
-                && (console.log(`set blank shelf to 'none'`));
-
-            console.log(`book.shelf: ${book.shelf}, type: ${typeof(book.shelf)}`);
+            (typeof book.shelf === 'undefined') && (book.shelf = 'none');
         }, this);
     }
 
