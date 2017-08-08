@@ -19,9 +19,6 @@ class BooksApp extends React.Component {
         book: {},
         query: '',
         shelf: '',
-
-        shelfUpdateCounter: 0,
-        handleBookCounter: 0
     }
 
     /**
