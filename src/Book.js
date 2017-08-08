@@ -12,9 +12,7 @@ class Book extends React.Component {
                 <div className="book">
                     <div className="book-top">
                     <div className="book-cover" style={{ 
-                        width: 128, 
-                        height: 193, 
-                        backgroundImage: `url(${book && book.imageLinks && book.imageLinks.thumbnail})`
+                            backgroundImage: `url(${book && book.imageLinks && book.imageLinks.thumbnail})`
                         }}>
                     </div>
                     <div className="book-shelf-changer">
@@ -36,6 +34,5 @@ class Book extends React.Component {
         ) 
     }
 }
-
 
 export default Book
