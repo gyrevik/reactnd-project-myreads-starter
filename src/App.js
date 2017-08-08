@@ -265,60 +265,12 @@ class BooksApp extends React.Component {
                                 <Shelf books={cr} shelfTitle='Currently Reading'
                                     updateShelf={this.updateShelf}
                                     handleBook={this.handleBook}/>
-                                <div className="bookshelf">
-                                    <h2 className="bookshelf-title">Currently Reading</h2>
-                                    <div className="bookshelf-books">
-                                        <ol className="books-grid">
-                                        {
-                                            cr && cr.length > 0 && (
-                                                cr.map((book) => (
-                                                    <Book key={book.id} book={book}
-                                                        onChangeValue={this.updateShelf}
-                                                        onClickBook={this.handleBook}
-                                                        onChangeShelf={this.changeShelf}
-                                                    />
-                                                ))
-                                            )
-                                        }
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div className="bookshelf">
-                                    <h2 className="bookshelf-title">Want to Read</h2>
-                                    <div className="bookshelf-books">
-                                        <ol className="books-grid">  
-                                        {
-                                            wtr && wtr.length > 0 && (
-                                                wtr.map((book) => (
-                                                    <Book key={book.id} book={book}
-                                                        onChangeValue={this.updateShelf}
-                                                        onClickBook={this.handleBook}
-                                                        onChangeShelf={this.changeShelf}
-                                                    />
-                                                ))
-                                            )
-                                        }
-                                        </ol>
-                                    </div>
-                                </div>
-                                <div className="bookshelf">
-                                    <h2 className="bookshelf-title">Read</h2>
-                                    <div className="bookshelf-books">
-                                        <ol className="books-grid">
-                                        {
-                                            r && r.length > 0 && (
-                                                r.map((book) => (
-                                                    <Book key={book.id} book={book}
-                                                        onChangeValue={this.updateShelf}
-                                                        onClickBook={this.handleBook}
-                                                        onChangeShelf={this.changeShelf}
-                                                    />
-                                                ))
-                                            )
-                                        }
-                                        </ol>
-                                    </div>
-                                </div>
+                                <Shelf books={wtr} shelfTitle='Want to Read'
+                                    updateShelf={this.updateShelf}
+                                    handleBook={this.handleBook}/>
+                                <Shelf books={r} shelfTitle='Read'
+                                    updateShelf={this.updateShelf}
+                                    handleBook={this.handleBook}/>
                             </div>
                         </div>
                         <div className="open-search">
