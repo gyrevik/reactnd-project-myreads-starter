@@ -7,9 +7,8 @@ import React from 'react'
 class Book extends React.Component {     
     render () {  
         const { book, onClickBook } = this.props;
-        
         return (
-            <li key={book.id} onClick={() => onClickBook(book)}>
+            <li key={book.id + '-' + book.title +'-'+ book.shelf} onClick={() => onClickBook(book)}>
                 <div className="book">
                     <div className="book-top">
                     <div className="book-cover" style={{ 

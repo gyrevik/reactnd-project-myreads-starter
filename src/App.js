@@ -91,8 +91,6 @@ class BooksApp extends React.Component {
                     this.setState({ booksFromSearch });
                 sessionStorage.setItem('booksFromSearch', JSON.stringify(booksFromSearch));
             });
-
-            console.log(`booksFromSearch(${query}): ${this.state.booksFromSearch.length}`);
         }
     }
 
