@@ -16,6 +16,7 @@ class BooksApp extends React.Component {
         booksWantToRead: [],
         booksRead: [],
 
+        book: {},
         query: '',
         shelf: '',
 
@@ -103,73 +104,29 @@ class BooksApp extends React.Component {
     */
     updateShelf = (shelfState) => {
         console.log(`updateShelf top: shelfState.target.value in updateShelf: ${shelfState.target.value}`);
-        sessionStorage.setItem('shelf', shelfState.target.value);
+        const book = this.state.book;
+        const shelf = shelfState.target.value;
 
         /**********************************************************/
         /* This way of updating state synchronously seems to work but not really */
-        this.setState({ shelf: shelfState.target.value }, () => { 
-            console.log('new shelf state:', this.state.shelf); // has it here
-        })
+        //this.setState({ shelf: shelfState.target.value }, () => { 
+        //    console.log('new shelf state:', this.state.shelf); // has it here
+        //})
 
         // does not have it here with or without a return statement above
-        console.log('new shelf state:', this.state.shelf, 'just making sure'); 
+        //console.log('new shelf state:', this.state.shelf, 'just making sure'); 
         /**********************************************************/
         /**********************************************************/
-
-        let hbc = this.state.handleBookCounter;
-        this.setState((state) => ({
-            handleBookCounter: ++hbc
-        }));
-
-        this.setState((state) => ({
-            shelfUpdateCounter: hbc
-        }));
-    }
-
-    /**
-    * @description Updates the shelf for a book on a shelf change
-    *              and uses sessionStorage to keep shelf state across
-    *              browser refresh
-    * @param {object} book
-    */
-    handleBook = (book) => {
-        console.log(`entered handleBook (${book.title}, ${book.shelf}, ${book.id})`);
-        const shelf = sessionStorage.getItem("shelf");
-        sessionStorage.setItem('shelf', ''); // clear for the click on the book before menu selection
-
-        if (shelf === '') {
-            console.log('empty shelf in handleBook. May be initial click on menu control. Exiting handleBook event handler');
-            return;
-        }
-
-        console.log(`putting book (${book.title}(${book.id})) in sessionStorage`);
-        sessionStorage.setItem('book', JSON.stringify(book));
-
-        this.setState((state) => ({
-            book: book
-        }));
-        
-        let hbc = this.state.handleBookCounter;
-        this.setState((state) => ({
-            handleBookCounter: ++hbc
-        }));
-
-        if (hbc !== this.state.shelfUpdateCounter) {
-            console.log('shelf has not been updated so will not update book, exiting handleBook');
-            return;
-        } else {
-            console.log('shelf has been updated so will update book');
-        }
 
         let bfs = this.state.booksFromSearch.slice();
-        this.updateBookArray(bfs, this.state.shelf, book);
+        this.updateBookArray(bfs, shelf, book);
         this.setState({ booksFromSearch: bfs});
         
         sessionStorage.setItem('booksFromSearch', JSON.stringify(bfs));
         console.log('handleBook put search into storage and state after shelf update')
         
         let ba = this.state.booksAll.slice();
-        if (!this.updateBookArray(ba, this.state.shelf, book)) {
+        if (!this.updateBookArray(ba, shelf, book)) {
             ba.push(book);
 
             this.setState((state) => {
@@ -181,6 +138,28 @@ class BooksApp extends React.Component {
 
         console.log('saving ba to sessionStorage booksAll key');
         sessionStorage.setItem('booksAll', JSON.stringify(ba));
+    }
+
+    /**
+    * @description Updates the shelf for a book on a shelf change
+    *              and uses sessionStorage to keep shelf state across
+    *              browser refresh
+    * @param {object} book
+    */
+    handleBook = (book) => {
+        if (book === this.state.book) {
+            console.log(`book has not changed, exiting handleBook`);
+            return;
+        }
+
+        console.log(`entered handleBook (${book.title}, ${book.shelf}, ${book.id})`);
+        console.log(`putting book (${book.title}(${book.id})) in sessionStorage`);
+        sessionStorage.setItem('book', JSON.stringify(book));
+
+        console.log(`putting book in state`);
+        this.setState((state) => ({
+            book: book
+        }));
     }
 
     /**
