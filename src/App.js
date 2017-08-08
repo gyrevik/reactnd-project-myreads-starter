@@ -67,26 +67,27 @@ class BooksApp extends React.Component {
     * @param {string} query
     */
     updateQuery = (query) => {
+        console.log(`entered updateQuery(${query}), query length is ${query.length}`);
+        let booksFromSearch = {};
         if (sessionStorage.getItem("query") === query) {
-            const booksFromSearch = JSON.parse(sessionStorage.getItem("booksFromSearch"));
-            this.setState((state) =>({
-                booksFromSearch
-            }))
-            console.log('loaded state.BooksFromSearch from sessionStorage in updateQuery');
-        }
-        if (this.state.query === query) {
+            booksFromSearch = JSON.parse(sessionStorage.getItem("booksFromSearch"));
+            this.setState({ booksFromSearch: booksFromSearch }, () => { 
+                console.log('loaded booksFromSearch from sessionStorage because query did not change');
+            })
             console.log(`the query (${query}) has not changed. Exiting updateQuery`);
             return;
         }
+
         this.setState({ query: query });
         sessionStorage.setItem('query', query);
 
         if (query.length > 0) {
+            console.log(`query changed and it's not empty so requerying API`);
             BooksAPI.search(query, 20).then((booksFromSearch) => {
-                if (booksFromSearch !== this.state.booksFromSearch) {
-                    this.setState({ booksFromSearch });
-                    sessionStorage.setItem('booksFromSearch', JSON.stringify(booksFromSearch));
-                }
+                console.log('updating shelves in booksFromSearch');
+                this.updateEmptyShelvesToNone(booksFromSearch);
+                this.setState({ booksFromSearch });
+                sessionStorage.setItem('booksFromSearch', JSON.stringify(booksFromSearch));
             });
 
             console.log(`booksFromSearch(${query}): ${this.state.booksFromSearch.length}`);
@@ -104,6 +105,7 @@ class BooksApp extends React.Component {
     */
     updateShelf = (shelfState) => {
         console.log(`updateShelf top: shelfState.target.value in updateShelf: ${shelfState.target.value}`);
+        sessionStorage.setItem('shelf', shelfState.target.value);
 
         /**********************************************************/
         /* This way of updating state synchronously seems to work but not really */
@@ -111,7 +113,7 @@ class BooksApp extends React.Component {
             console.log('new shelf state:', this.state.shelf); // has it here
         })
 
-        // does not have it here
+        // does not have it here with or without a return statement above
         console.log('new shelf state:', this.state.shelf, 'just making sure'); 
         /**********************************************************/
         /**********************************************************/
@@ -133,25 +135,17 @@ class BooksApp extends React.Component {
     * @param {object} book
     */
     handleBook = (book) => {
-        const shelf = this.state.shelf;
+        console.log(`entered handleBook (${book.title}, ${book.shelf}, ${book.id})`);
+        const shelf = sessionStorage.getItem("shelf");
+        sessionStorage.setItem('shelf', ''); // clear for the click on the book before menu selection
+
         if (shelf === '') {
             console.log('empty shelf in handleBook. May be initial click on menu control. Exiting handleBook event handler');
             return;
         }
 
-        const shelfFromStorage = sessionStorage.getItem("shelf");
-        const bookFromStorage = JSON.parse(sessionStorage.getItem("book"));
-        if (shelfFromStorage && bookFromStorage) {
-            if (book.id === bookFromStorage.id && this.state.shelf === shelfFromStorage) {
-                console.log(`book (${book.title}, id: ${book.id} and shelf (${this.state.shelf})
-                    has not changed from what we have in storage, exiting handleBook`);
-                return;
-            }
-        }
-
-        console.log(`putting book (${book.title}(${book.id})) and shelf (${this.state.shelf}) in sessionStorage`);
+        console.log(`putting book (${book.title}(${book.id})) in sessionStorage`);
         sessionStorage.setItem('book', JSON.stringify(book));
-        sessionStorage.setItem('shelf', this.state.shelf);
 
         this.setState((state) => ({
             book: book
@@ -184,31 +178,7 @@ class BooksApp extends React.Component {
                 return { booksAll: ba }
             });
 
-            //this.setState( (state) => {
-            //    state.booksAll = state.booksAll.concat([book]);
-            //    return state;
-            //});
-
-            //this.setState((state) => {
-            //    return {
-            //        booksAll: [...state.booksAll, book]
-            //    }
-            //})
-
-            //this.setState({ booksAll: ba});
-
-            //let ba = this.state.booksAll.concat([book]);
-            //this.setState({ booksAll: ba});
-            // i understand i don't see state.booksAll updated immediately here
-            // because the above call is async. however, i don't understand why
-            // i also don't see the update immediately for the attempts commented
-            // above this which i thought were synchronous with the function callback
-
             console.log(`added book (${book.title}(${book.id})) to booksAll (array for shelves)`);
-            //console.log('ba (booksAll local copy) array:');
-            //this.listBooks(ba);
-            //console.log('booksAll from state:');
-            //this.listBooks(this.state.booksAll);
         }
 
         console.log('saving ba to sessionStorage booksAll key');
@@ -239,6 +209,15 @@ class BooksApp extends React.Component {
         console.log(`updatedBook: ${updatedBook}`);
 
         return updatedBook;
+    }
+
+    updateEmptyShelvesToNone(array) {
+        array.forEach(function(book) {
+            (typeof book.shelf == 'undefined') && (book.shelf = 'none')
+                && (console.log(`set blank shelf to 'none'`));
+
+            console.log(`book.shelf: ${book.shelf}, type: ${typeof(book.shelf)}`);
+        }, this);
     }
 
     /**
