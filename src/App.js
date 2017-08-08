@@ -87,7 +87,8 @@ class BooksApp extends React.Component {
             BooksAPI.search(query, 20).then((booksFromSearch) => {
                 console.log('updating shelves in booksFromSearch');
                 this.updateEmptyShelvesToNone(booksFromSearch);
-                this.setState({ booksFromSearch });
+                if (booksFromSearch !== this.state.booksFromSearch)
+                    this.setState({ booksFromSearch });
                 sessionStorage.setItem('booksFromSearch', JSON.stringify(booksFromSearch));
             });
 
