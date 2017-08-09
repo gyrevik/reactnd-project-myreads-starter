@@ -4,11 +4,16 @@ import React from 'react'
 * @description Represents a book
 * @param {object} book - The book object to render
 */
-class Book extends React.Component {     
-    render () {  
-        const { book, onClickBook } = this.props;
+class Book extends React.Component {
+    onClickBook = () => {
+        this.props.onClickBook(this.props.book);
+    }
+
+    render () {
+        const { book } = this.props;
+
         return (
-            <li key={book.id + '-' + book.title +'-'+ book.shelf} onClick={() => onClickBook(book)}>
+            <li key={book.id + '-' + book.title +'-'+ book.shelf} onClick={this.onClickBook}>
                 <div className="book">
                     <div className="book-top">
                     <div className="book-cover" style={{ 

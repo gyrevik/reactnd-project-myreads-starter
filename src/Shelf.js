@@ -16,7 +16,7 @@ class Shelf extends React.Component {
                     <ol className="books-grid">
                     {
                         books && books.length > 0 && (books.map((book) => (
-                            <Book key={book.id} book={book}
+                            <Book key={book.id + '-' + book.title +'-'+ book.shelf} book={book}
                                 onChangeValue={this.props.updateShelf}
                                 onClickBook={this.props.handleBook}
                             />
