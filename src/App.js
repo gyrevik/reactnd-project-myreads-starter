@@ -102,18 +102,8 @@ class BooksApp extends React.Component {
     updateShelf = (shelfState) => {
         console.log(`updateShelf top: shelfState.target.value in updateShelf: ${shelfState.target.value}`);
         const book = this.state.book;
+        console.log(`got ${book.title}, ${book.id} from state`);
         const shelf = shelfState.target.value;
-
-        /**********************************************************/
-        /* This way of updating state synchronously seems to work but not really */
-        //this.setState({ shelf: shelfState.target.value }, () => { 
-        //    console.log('new shelf state:', this.state.shelf); // has it here
-        //})
-
-        // does not have it here with or without a return statement above
-        //console.log('new shelf state:', this.state.shelf, 'just making sure'); 
-        /**********************************************************/
-        /**********************************************************/
 
         let bfs = this.state.booksFromSearch.slice();
         this.updateBookArray(bfs, shelf, book);
@@ -124,13 +114,10 @@ class BooksApp extends React.Component {
         
         let ba = this.state.booksAll.slice();
         if (!this.updateBookArray(ba, shelf, book)) {
+            book.shelf = shelf;
             ba.push(book);
-
-            this.setState((state) => {
-                return { booksAll: ba }
-            });
-
-            console.log(`added book (${book.title}(${book.id})) to booksAll (array for shelves)`);
+            this.setState({ booksAll: ba });
+            console.log(`added book (${book.title}(${book.id})) to booksAll (array for shelves) and updated state`);
         }
 
         console.log('saving ba to sessionStorage booksAll key');
@@ -151,12 +138,10 @@ class BooksApp extends React.Component {
 
         console.log(`entered handleBook (${book.title}, ${book.shelf}, ${book.id})`);
         console.log(`putting book (${book.title}(${book.id})) in sessionStorage`);
-        sessionStorage.setItem('book', JSON.stringify(book));
+        //sessionStorage.setItem('book', JSON.stringify(book));
 
         console.log(`putting book in state`);
-        this.setState((state) => ({
-            book: book
-        }));
+        this.setState({ book: book });
     }
 
     /**
