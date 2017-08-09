@@ -14,12 +14,11 @@ class SearchBooksResults extends React.Component {
                 <ol className="books-grid">          
                 {
                     booksFromSearch && booksFromSearch.length > 0 && (booksFromSearch.map((book) => (
-                            <Book key={book.id} book={book}
-                                onChangeValue={this.props.updateShelf}
-                                onClickBook={this.props.handleBook}
-                            />
-                        ))
-                    )
+                        <Book key={book.id} book={book}
+                            onChangeValue={this.props.updateShelf}
+                            onClickBook={this.props.handleBook}
+                        />
+                    )))
                 }
                 </ol>
             </div>
