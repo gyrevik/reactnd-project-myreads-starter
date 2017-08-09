@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+//import { Throttle } from 'react-throttle';
+//import { Debounce } from 'react-throttle';
 
 class SearchBooksBar extends React.Component {
     constructor(props) {
@@ -24,14 +26,18 @@ class SearchBooksBar extends React.Component {
                     However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                     you don't find a specific author or title. Every search is limited by search terms.
                     */}
-                    <input 
-                        type="text" 
-                        placeholder="Search by title or author"
-                        //value={this.state.query}
-                        value={sessionStorage.getItem("query") || ''}
-                        //onChange={(event) => this.handleQuery(event.target.value)}
-                        onChange={this.handleQuery}
-                    />
+
+                    {/*Debounce and Throttle don't seem to work here*/}
+                    {/*<Debounce time="200" handler="onChange">*/}
+                        <input 
+                            type="text" 
+                            placeholder="Search by title or author"
+                            //value={this.state.query}
+                            value={sessionStorage.getItem("query") || ''}
+                            //onChange={(event) => this.handleQuery(event.target.value)}
+                            onChange={this.handleQuery}
+                        />
+                    {/*</Debounce>*/}
                 </div>
             </div>
         )
