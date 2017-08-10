@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
-import SearchBooksBar from './SearchBooksBar'
-import SearchBooksResults from './SearchBooksResults'
+//import SearchBooksBar from './SearchBooksBar'
+//import SearchBooksResults from './SearchBooksResults'
+import SearchBooks from './SearchBooks'
 import Shelf from './Shelf'
 import './App.css'
 
@@ -201,13 +202,13 @@ class BooksApp extends React.Component {
         return (
             <div className="app">
                 <Route path="/search" render={() => (
-                    <div className="search-books">
-                        <SearchBooksBar onQueryChange={this.updateQuery}/>
-                        <SearchBooksResults 
-                            booksFromSearch={booksFromSearch}
-                            updateShelf={this.updateShelf}
-                            handleBook={this.handleBook}/>
-                    </div>
+                    
+                    
+                    <SearchBooks onQueryChange={this.updateQuery}
+                        booksFromSearch={booksFromSearch}
+                        updateShelf={this.updateShelf}
+                        handleBook={this.handleBook}/>
+                    
                 )}/>
               
                 <Route exact path="/" render={() => (
